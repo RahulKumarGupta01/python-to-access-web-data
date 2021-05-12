@@ -1,0 +1,23 @@
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import ssl
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
+url = input('Enter - ')
+html = urlopen(url, context=ctx).read()
+soup = BeautifulSoup(html, "html.parser")
+
+count=int(input("Enter count: "))
+
+pos=int(input("Enter position: "))
+
+while count:
+    tags = soup('a')
+    url=tags[pos-1].get('href', None)
+    html = urlopen(url, context=ctx).read()
+    soup = BeautifulSoup(html, "html.parser")
+    if count==1: print(tags[pos-1].contents[0])
+    count=count-1
